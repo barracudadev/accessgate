@@ -1,5 +1,4 @@
-<img width="4096" height="1536" alt="Accessgate" src="https://github.com/user-attachments/assets/e7042fc8-6b72-4ceb-933f-bd8a0a55c883" />
-
+# Accessgate
 
 ## Overview
 
