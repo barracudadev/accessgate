@@ -67,7 +67,7 @@ the specific crate you're working on before running them.
 1. Make sure your fork is up to date:
 
     ```sh
-    git remote add upstream https://github.com/3K1-Labs/accessgate.git
+    git remote add upstream https://github.com/barracudadev/accessgate.git
     git fetch upstream
     git pull --rebase upstream main
     ```
