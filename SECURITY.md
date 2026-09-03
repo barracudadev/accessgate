@@ -3,7 +3,7 @@
 ## Reporting a Vulnerability
 
 If you discover a security vulnerability in any contract in this repository,
-please report it privately by email to **superfranky@3k1labs.com** rather than
+please report it privately by email to **skillxplorer@gmail.com** rather than
 opening a public issue. Include:
 
 - A description of the vulnerability and its potential impact.
