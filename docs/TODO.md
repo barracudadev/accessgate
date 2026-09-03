@@ -71,7 +71,7 @@ not yet drafted or filed.
       `(verifier_address, public_key)` model (`Verifier` trait: `verify(e, hash, key_data,
       sig_data) -> bool`). None of these have issues yet:
       - ~~Secp256r1 (raw ECDSA, e.g. secure-enclave signing)~~ — shipped as
-        `latch-verifiers/p256-verifier` (#78, 2026-08); follow-ups tracked in #19/#22/#23.
+        `accessgate-verifiers/p256-verifier` (#78, 2026-08); follow-ups tracked in #19/#22/#23.
       - BLS
       - RSA (institutional keys)
       - ZK-proof-based signing

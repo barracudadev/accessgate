@@ -324,14 +324,14 @@ fn e2e_deploy_via_smart_account() {
     let e = Env::default();
     e.mock_all_auths();
 
-    // 1. Register a LatchSmartAccount with a default signer.
+    // 1. Register a AccessgateSmartAccount with a default signer.
     let owner_signers = soroban_sdk::vec![
         &e,
         stellar_accounts::smart_account::Signer::Delegated(Address::generate(&e))
     ];
     let policies = soroban_sdk::Map::<Address, soroban_sdk::Val>::new(&e);
-    let account_id = e.register(smart_account::LatchSmartAccount, (owner_signers, policies));
-    let smart_account_client = smart_account::LatchSmartAccountClient::new(&e, &account_id);
+    let account_id = e.register(smart_account::AccessgateSmartAccount, (owner_signers, policies));
+    let smart_account_client = smart_account::AccessgateSmartAccountClient::new(&e, &account_id);
 
     // 2. Upload the timelock-vault WASM to the environment.
     let wasm_hash = e.deployer().upload_contract_wasm(timelock_vault_wasm::WASM);

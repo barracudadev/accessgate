@@ -1,6 +1,6 @@
 # Modified Ed25519 Verifier Spec
 
-A stateless singleton Soroban contract that verifies Ed25519 signatures produced by Phantom wallet on behalf of Latch smart accounts. Deployed once, shared across all accounts on the network.
+A stateless singleton Soroban contract that verifies Ed25519 signatures produced by Phantom wallet on behalf of Accessgate smart accounts. Deployed once, shared across all accounts on the network.
 
 ## Why This Verifier Exists
 
@@ -12,7 +12,7 @@ Phantom is a Solana wallet. Solana also uses Ed25519, and on Solana a transactio
 
 The Soroban auth payload hash is exactly 32 bytes. Calling `provider.signMessage(auth_payload_hash)` from Phantom will be rejected at the wallet level before it ever reaches the chain.
 
-### The Latch Signing Convention
+### The Accessgate Signing Convention
 
 The fix is a prefix. Instead of signing the raw 32-byte hash, the client constructs a human-readable string:
 
@@ -24,7 +24,7 @@ This produces a 92-byte message (28-byte prefix + 64-byte lowercase hex encoding
 
 This contract is the on-chain counterpart. It receives the 32-byte auth payload hash from the Soroban host, reconstructs the expected 92-byte signed message internally, and verifies the Ed25519 signature against it.
 
-This prefix format is the **Latch Ed25519 signing convention for Phantom**. It is not a workaround — it is the defined protocol between the client and this verifier. Any client integrating with this verifier must produce signatures in this format.
+This prefix format is the **Accessgate Ed25519 signing convention for Phantom**. It is not a workaround — it is the defined protocol between the client and this verifier. Any client integrating with this verifier must produce signatures in this format.
 
 ### Constraint Scope
 
@@ -149,8 +149,8 @@ The verifier holds no storage. No constructor is needed. Every call is a pure fu
 ## Workspace Location
 
 ```
-latch-contracts/
-└── latch-verifiers/
+accessgate/
+└── demo/
     └── modified-ed25519-verifier/
         └── src/
             ├── lib.rs
@@ -242,7 +242,7 @@ impl Verifier for ModifiedEd25519Verifier {
 
 ## What This Is Not
 
-- Not a general-purpose Ed25519 verifier. It only verifies signatures in the Latch/Phantom prefix format. A signature over a raw hash will always fail.
+- Not a general-purpose Ed25519 verifier. It only verifies signatures in the Accessgate/Phantom prefix format. A signature over a raw hash will always fail.
 - Not coupled to Phantom beyond the signing convention. Any client that produces `sign(key, "Stellar Smart Account Auth:\n" + hex(hash))` will work, regardless of what wallet produced the signature.
 - Not responsible for replay protection. The Soroban auth framework handles that at the host level.
 - Not a replacement for `Signer::Delegated`. Users migrating from G-addresses can use the delegated path — no verifier needed.

@@ -1,6 +1,6 @@
 # Smart-Account Verifier Use-Case Research
 
-This note explores which signing and verification methods are genuinely useful for Latch smart accounts. The goal is not to implement verifiers merely because the cryptographic schemes exist, but to connect each verifier to a concrete wallet capability and contributor-ready scope.
+This note explores which signing and verification methods are genuinely useful for Accessgate smart accounts. The goal is not to implement verifiers merely because the cryptographic schemes exist, but to connect each verifier to a concrete wallet capability and contributor-ready scope.
 
 ## Executive conclusion
 
@@ -22,7 +22,7 @@ Users can inspect and delete passkeys stored in Google Password Manager or Chrom
 
 However, a website cannot reliably delete a private passkey from the user's authenticator or password manager. It can revoke the credential by ceasing to accept its public key. Physical deletion remains a user/device operation.
 
-For Latch, this is not a blocker. A session credential does not need to be physically erased before it becomes harmless. Authorization ends when its context rule expires or is removed on-chain. Local deletion is additional security hygiene rather than the authoritative security boundary.
+For Accessgate, this is not a blocker. A session credential does not need to be physically erased before it becomes harmless. Authorization ends when its context rule expires or is removed on-chain. Local deletion is additional security hygiene rather than the authoritative security boundary.
 
 References:
 
@@ -86,7 +86,7 @@ The factory does not initially need to support raw P-256. The factory controls i
 
 ### Secp256k1: EVM-wallet interoperability
 
-The concrete use case is controlling or co-signing a Latch account with an existing MetaMask, Ethereum hardware-wallet, or other EVM key.
+The concrete use case is controlling or co-signing an Accessgate account with an existing MetaMask, Ethereum hardware-wallet, or other EVM key.
 
 This is useful interoperability infrastructure, but it is not blocking the smart-account core. The existing issue should be re-scoped around an end-to-end wallet experiment that settles:
 
@@ -100,7 +100,7 @@ This is useful interoperability infrastructure, but it is not blocking the smart
 
 A generic "ZK signer" is under-specified. Every proof-backed authorization must say what fact gives the prover authority over the requested account action.
 
-Promising Latch-specific uses include:
+Promising Accessgate-specific uses include:
 
 - private email-guardian recovery;
 - anonymous membership in an approved organization or guardian set;
@@ -113,7 +113,7 @@ The expected flow is:
 
 1. A recovery client obtains email or identity evidence.
 2. It generates a proof off-chain.
-3. Public inputs bind the proof to the Latch account, network, intended action, new public key, nonce, and expiry.
+3. Public inputs bind the proof to the Accessgate account, network, intended action, new public key, nonce, and expiry.
 4. The proof is supplied as signer `sig_data`.
 5. A Soroban verifier validates it.
 6. A narrowly scoped recovery rule authorizes only the recovery transition.
@@ -193,7 +193,7 @@ Contributor issues should be independently mergeable and small enough for one co
 
 Recommended interpretation of the Drips levels:
 
-| Complexity | Points | Appropriate Latch scope |
+| Complexity | Points | Appropriate Accessgate scope |
 |---|---:|---|
 | Trivial | 100 | Focused docs, typo, small test assertion, or bounded cleanup |
 | Medium | 150 | Narrow verifier adapter, standard test expansion, client proof of concept with settled architecture |

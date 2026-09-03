@@ -1,6 +1,6 @@
 # Ed25519 Verifier Spec
 
-A stateless singleton Soroban contract that verifies Ed25519 signatures over the raw 32-byte Soroban auth payload hash, on behalf of Latch smart accounts. Deployed once, shared across all accounts on the network.
+A stateless singleton Soroban contract that verifies Ed25519 signatures over the raw 32-byte Soroban auth payload hash, on behalf of Accessgate smart accounts. Deployed once, shared across all accounts on the network.
 
 ## Why This Verifier Exists
 

@@ -48,7 +48,7 @@ fn build_signed_message(hash: &[u8; 32]) -> [u8; SIGNED_MSG_LEN] {
     msg
 }
 
-/// Signs the Latch-prefixed message with the given keypair.
+/// Signs the Accessgate-prefixed message with the given keypair.
 fn phantom_sign(keypair: &SigningKey, hash_bytes: &[u8; 32]) -> [u8; 64] {
     let msg = build_signed_message(hash_bytes);
     keypair.sign(&msg).to_bytes()

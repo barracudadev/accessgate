@@ -46,7 +46,7 @@ impl MockTarget {
     }
 
     /// Requires `caller`'s own authorization, independent of whoever signed
-    /// the enclosing `forward()` call. Mirrors a real Latch smart-account
+    /// the enclosing `forward()` call. Mirrors a real Accessgate smart-account
     /// operation forwarded through this contract, which needs the account's
     /// own signer authorization as a sub-invocation, not just a no-auth call
     /// like `greet()`.

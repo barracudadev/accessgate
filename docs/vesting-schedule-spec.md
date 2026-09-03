@@ -1,6 +1,6 @@
 # Vesting Schedule Contract Spec
 
-A "personal contract" template that implements linear and cliff-based token vesting for Latch smart accounts. Deployed per schedule, owned by the beneficiary's smart account.
+A "personal contract" template that implements linear and cliff-based token vesting for Accessgate smart accounts. Deployed per schedule, owned by the beneficiary's smart account.
 
 ## Motivation & Architecture
 

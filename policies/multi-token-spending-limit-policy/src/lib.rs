@@ -1,4 +1,4 @@
-//! Oracle-denominated multi-token spending limit policy for Latch smart
+//! Oracle-denominated multi-token spending limit policy for Accessgate smart
 //! accounts.
 //!
 //! Attach this policy to a `CallContract` context rule to cap, in USD terms,

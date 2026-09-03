@@ -1,14 +1,14 @@
 [workspace]
 resolver = "2"
 members = [
-  "latch-smart-account",
+  "accessgate-smart-account",
   "account-factory/contracts/factory-contract",
   "account-factory/contracts/dummy-account",
   "account-factory/contracts/dummy-singleton",
-  "latch-verifiers/ed25519-verifier",
-  "latch-verifiers/p256-verifier",
-  "latch-verifiers/secp256k1-verifier",
-  "latch-verifiers/webauthn-verifier",
+  "accessgate-verifiers/ed25519-verifier",
+  "accessgate-verifiers/p256-verifier",
+  "accessgate-verifiers/secp256k1-verifier",
+  "accessgate-verifiers/webauthn-verifier",
   "policies/threshold-policy",
   "policies/weighted-threshold-policy",
   "policies/session-policy",

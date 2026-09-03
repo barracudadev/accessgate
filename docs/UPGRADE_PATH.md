@@ -28,7 +28,7 @@ hadn't been written down in one place.
 | Policies (threshold, session, spending-limit) | **Yes, per-account, opt-in** | Account owner calls `remove_policy` + `add_policy` to point their context rule at a new policy contract address |
 | Verifiers (Ed25519 / WebAuthn / Secp256k1) | **Yes, per-signer, opt-in** | Account owner calls `remove_signer` + `add_signer` to re-register against a new verifier address |
 
-`latch-smart-account/README.md`'s security section already states this as a deliberate choice:
+`accessgate-smart-account/README.md`'s security section already states this as a deliberate choice:
 "No external admin. No owner key, no upgrade proxy. Only the account's own signers can mutate it."
 
 ### The factory already speced this, it just wasn't explained
@@ -81,14 +81,14 @@ mobile app, dApp) at its address.
 
 ## Decision 2: The smart account gets a self-authorized `upgrade()`
 
-**Implemented (2026-08-20).** `LatchSmartAccount` now has an `upgrade()` entry point, gated the
+**Implemented (2026-08-20).** `AccessgateSmartAccount` now has an `upgrade()` entry point, gated the
 same way every other mutation on the account already is:
 
 ```rust
 use stellar_contract_utils::upgradeable::{self as upgradeable, Upgradeable};
 
 #[contractimpl]
-impl Upgradeable for LatchSmartAccount {
+impl Upgradeable for AccessgateSmartAccount {
     fn upgrade(e: &Env, new_wasm_hash: BytesN<32>, _operator: Address) {
         e.current_contract_address().require_auth();
         upgradeable::upgrade(e, &new_wasm_hash);
@@ -105,7 +105,7 @@ it's the documented way to use the trait.
 
 ### Why this matters beyond "nice to have"
 
-Today, `upgrade()` doesn't exist on `LatchSmartAccount` at all. That's a different thing from "the
+Today, `upgrade()` doesn't exist on `AccessgateSmartAccount` at all. That's a different thing from "the
 user chose not to have this power" — no amount of signer authority, no matter how high the
 multisig threshold, can act on a function that was never written. That's a capability gap, not a
 permission gate. A wallet that's pitched as *programmable* should mean the ceiling on what an
@@ -119,9 +119,9 @@ deploy time.
 - It does **not** affect the factory decision above — new accounts still come from a new factory
   when the core logic changes. `upgrade()` is what lets *existing* accounts opt into that new
   logic in place, without a full migration to a new address.
-- It mirrors the existing pattern already used for Latch-added methods on top of what
-  `SmartAccount for LatchSmartAccount {}` provides for free — see `batch_add_signer` in
-  `latch-smart-account/src/lib.rs`, which follows the identical one-line
+- It mirrors the existing pattern already used for Accessgate-added methods on top of what
+  `SmartAccount for AccessgateSmartAccount {}` provides for free — see `batch_add_signer` in
+  `accessgate-smart-account/src/lib.rs`, which follows the identical one-line
   `require_auth()`-then-delegate shape this would use.
 
 ---
@@ -150,7 +150,7 @@ deploy time.
 - Storage migration strategy, if a future account version changes stored state shape. OZ's own
   `upgradeable` module docs recommend one of: eager migration (bounded data), lazy migration
   (unbounded data), or enum wrappers for forward-compatible layouts — not yet decided which fits
-  a future breaking `LatchSmartAccount` change, since no such change exists yet to migrate.
+  a future breaking `AccessgateSmartAccount` change, since no such change exists yet to migrate.
 - Client-side (web extension / mobile / dApp) UX for surfacing "a new account version is
   available" and walking a user through authorizing the upgrade.
 - No test yet proves an upgrade *changes behavior* (only that the mechanism succeeds end-to-end

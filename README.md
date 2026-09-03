@@ -1,11 +1,11 @@
-<img width="4096" height="1536" alt="Latch 7" src="https://github.com/user-attachments/assets/e7042fc8-6b72-4ceb-933f-bd8a0a55c883" />
+<img width="4096" height="1536" alt="Accessgate" src="https://github.com/user-attachments/assets/e7042fc8-6b72-4ceb-933f-bd8a0a55c883" />
 
 
 ## Overview
 
-Soroban smart contracts for the Latch auth layer. Provides deterministic smart account creation with support for Ed25519, raw P-256, raw secp256k1, and WebAuthn signers.
+Soroban smart contracts for the Accessgate auth layer. Provides deterministic smart account creation with support for Ed25519, raw P-256, raw secp256k1, and WebAuthn signers.
 
-Latch accounts are Soroban smart accounts — programmable wallets that replace private-key-only authorization with flexible multi-signer, multi-policy authorization. Users can sign transactions with Ed25519 keys, raw P-256 keys, raw secp256k1 keys, passkeys, or any supported combination. Wallet-specific signing flows require separate client integration.
+Accessgate accounts are Soroban smart accounts — programmable wallets that replace private-key-only authorization with flexible multi-signer, multi-policy authorization. Users can sign transactions with Ed25519 keys, raw P-256 keys, raw secp256k1 keys, passkeys, or any supported combination. Wallet-specific signing flows require separate client integration.
 
 The system is built on the [OpenZeppelin Stellar Contracts](https://github.com/OpenZeppelin/stellar-contracts) smart account framework.
 
@@ -16,14 +16,14 @@ This repository is a **single Cargo workspace** — every contract is a member c
 `--package`.
 
 ```
-latch-contracts/
+accessgate/
 ├── account-factory/
 │   └── contracts/
 │       ├── factory-contract/    # ✅ Complete — the factory itself
 │       ├── dummy-account/       # Test-only stub used by factory-contract's tests
 │       └── dummy-singleton/     # Test-only stub used by factory-contract's tests
-├── latch-smart-account/         # ✅ Smart account contract
-├── latch-verifiers/              # Verifier contracts
+├── accessgate-smart-account/    # ✅ Smart account contract
+├── accessgate-verifiers/        # Verifier contracts
 │   ├── ed25519-verifier/         # ✅ Ed25519 — raw hash, no wrapping
 │   ├── p256-verifier/             # ✅ P-256 — raw hash, no WebAuthn ceremony
 │   ├── secp256k1-verifier/        # ✅ secp256k1 — raw hash, recover and compare
@@ -32,7 +32,10 @@ latch-contracts/
 │   ├── threshold-policy/            # ✅ Simple (unweighted) threshold policy
 │   ├── weighted-threshold-policy/   # ✅ Weighted threshold policy
 │   ├── session-policy/              # ✅ Method-allowlist (session key) policy
-│   └── spending-limit-policy/       # ✅ Spending-limit policy
+│   ├── spending-limit-policy/       # ✅ Spending-limit policy
+│   ├── multi-token-spending-limit-policy/ # ✅ Multi-token spending limit policy
+│   ├── parameter-scoped-policy/     # ✅ Parameter scoped policy
+│   └── recipient-allowlist-policy/  # ✅ Recipient allowlist policy
 ├── demo/                        # Demo/reference code — not shipped, not deployed for real use
 │   └── modified-ed25519-verifier/   # Wallet-signing-popup wrapping pattern, kept for reference
 ├── fee-forwarder/                # ✅ Permissioned fee forwarder for gasless (sponsored) transactions
@@ -45,7 +48,7 @@ latch-contracts/
 
 ### Factory — `account-factory/` ✅
 
-The canonical entrypoint for creating Latch smart accounts. Validates and canonicalizes signer inputs, derives deterministic account addresses, and deploys new smart account instances.
+The canonical entrypoint for creating Accessgate smart accounts. Validates and canonicalizes signer inputs, derives deterministic account addresses, and deploys new smart account instances.
 
 **Key properties:**
 - Address derivation is deterministic — same params always produce the same address
@@ -56,11 +59,11 @@ The canonical entrypoint for creating Latch smart accounts. Validates and canoni
 
 See [`account-factory/README.md`](account-factory/README.md) for full documentation.
 
-### Smart Account — `latch-smart-account/` ✅
+### Smart Account — `accessgate-smart-account/` ✅
 
 OZ-based programmable wallet contract. Implements `CustomAccountInterface`, `SmartAccount`, `ExecutionEntryPoint`, and `Upgradeable`. Initialized with a set of signers and optional policies by the factory. `upgrade()` is self-authorized — gated by the account's own signers via `require_auth()`, the same as every other mutation, not an external admin. See [`docs/UPGRADE_PATH.md`](docs/UPGRADE_PATH.md) for the reasoning.
 
-### Verifiers — `latch-verifiers/` ✅
+### Verifiers — `accessgate-verifiers/` ✅
 
 Stateless singleton contracts that verify signatures on behalf of smart accounts. One contract per signer kind, shared across all accounts on the network.
 
@@ -72,7 +75,7 @@ Stateless singleton contracts that verify signatures on behalf of smart accounts
 | `webauthn-verifier` | Passkeys, Face ID, Touch ID, YubiKey | 65-byte P-256 key + credential ID | ✅ Implemented |
 
 `secp256k1-verifier` checks a low-S `r[32] || s[32] || recovery_id[1]`
-signature over the raw Latch auth digest. The recovery ID must be raw `0` or
+signature over the raw Accessgate auth digest. The recovery ID must be raw `0` or
 `1`; clients receiving Ethereum-style `27`/`28` values must normalize them
 off-chain. This does not provide EIP-191, `personal_sign`, or automatic MetaMask
 compatibility.
@@ -87,7 +90,7 @@ OZ weighted threshold policy — each signer gets an individual weight, and a mi
 
 ### Session Policy — `policies/session-policy/` ✅
 
-Restricts a context rule's signers to an allow-listed set of contract function names — the building block behind Latch session keys. Own logic, not a wrapper around an OZ primitive.
+Restricts a context rule's signers to an allow-listed set of contract function names — the building block behind Accessgate session keys. Own logic, not a wrapper around an OZ primitive.
 
 ### Spending Limit Policy — `policies/spending-limit-policy/` ✅
 
@@ -95,11 +98,11 @@ Thin wrapper around OZ's `stellar-accounts` spending-limit policy. Enforces a ro
 
 ### Fee Forwarder — `fee-forwarder/` ✅
 
-Singleton, permissioned contract that lets `latch-relayer` sponsor gasless transactions for Latch accounts holding no XLM. Thin wrapper around OZ's `stellar-fee-abstraction` helpers, following OZ's `examples/fee-forwarder-permissioned` reference. An account signs one authorization tree covering `forward()`, with sub-invocations for the fee-token `approve` and the actual target call; the relayer (gated to the `executor` role) fills in the real `fee_amount` (`<=` the user's signed cap) and submits, paying the network's XLM fee itself. The contract collects the fee and forwards the target call atomically — either both succeed or the whole transaction reverts. `enable_fee_token`/`disable_fee_token`/`sweep_tokens` are manager-gated. Off-chain quoting, holding the executor credential, and submitting `forward()` transactions are out of scope here — tracked in the companion `latch-relayer` issue.
+Singleton, permissioned contract that lets `accessgate-relayer` sponsor gasless transactions for Accessgate accounts holding no XLM. Thin wrapper around OZ's `stellar-fee-abstraction` helpers, following OZ's `examples/fee-forwarder-permissioned` reference. An account signs one authorization tree covering `forward()`, with sub-invocations for the fee-token `approve` and the actual target call; the relayer (gated to the `executor` role) fills in the real `fee_amount` (`<=` the user's signed cap) and submits, paying the network's XLM fee itself. The contract collects the fee and forwards the target call atomically — either both succeed or the whole transaction reverts. `enable_fee_token`/`disable_fee_token`/`sweep_tokens` are manager-gated. Off-chain quoting, holding the executor credential, and submitting `forward()` transactions are out of scope here — tracked in the companion `accessgate-relayer` issue.
 
 ### Demo — `demo/` ⚠️
 
-Not part of the shipped contract lineup — not deployed for real use, not wired into anything. `modified-ed25519-verifier` was built to prove a one-off demo (a Phantom-held key deploying and owning a Latch smart account on-chain), not a real product feature: Latch and Phantom are separate browser extensions, and nothing gives Latch's own extension an ongoing way to drive Phantom's signing popup afterward. Kept as a worked reference for the general "wallet popup won't sign a raw hash" wrapping pattern — see its module doc.
+Not part of the shipped contract lineup — not deployed for real use, not wired into anything. `modified-ed25519-verifier` was built to prove a one-off demo (a Phantom-held key deploying and owning an Accessgate smart account on-chain), not a real product feature: Accessgate and Phantom are separate browser extensions, and nothing gives Accessgate's own extension an ongoing way to drive Phantom's signing popup afterward. Kept as a worked reference for the general "wallet popup won't sign a raw hash" wrapping pattern — see its module doc.
 
 ## Deployment Order
 
@@ -130,12 +133,12 @@ cargo install --locked stellar-cli
 `cargo +nightly fmt --all -- --check` formats/checks the whole workspace regardless of where you
 run it from. Everything else scopes to one crate at a time — either `cd` into the crate directory
 or pass `--package <name>` from the repo root (package names don't always match directory names,
-e.g. `latch-smart-account`'s package is `smart-account` — see each crate's own `Cargo.toml`):
+e.g. `accessgate-smart-account`'s package is `smart-account` — see each crate's own `Cargo.toml`):
 
 ```bash
 cargo +nightly fmt --all -- --check                          # whole workspace
 
-cd latch-smart-account   # or any other crate listed above
+cd accessgate-smart-account   # or any other crate listed above
 cargo clippy --all-targets --all-features -- -D warnings     # lint, this crate only
 cargo test                                                   # unit + integration tests
 stellar contract build                                       # WASM build
@@ -148,8 +151,8 @@ Planning, spec, and process docs live in [`docs/`](docs/):
 - [`docs/factory-spec.md`](docs/factory-spec.md) — Detailed behavioral specification for the factory contract (validation rules, address derivation formula, canonicalization, worked examples)
 - [`docs/UPGRADE_PATH.md`](docs/UPGRADE_PATH.md) — How the factory and smart account handle upgrades and versioning
 - [`docs/MAINNET_READINESS_CHECKLIST.md`](docs/MAINNET_READINESS_CHECKLIST.md) — What's still open before real funds sit behind these contracts
-- [`docs/OSS_READINESS_CHECKLIST.md`](docs/OSS_READINESS_CHECKLIST.md) — Repo-agnostic checklist for getting any Latch repo ready for outside contributors
-- [`docs/ISSUE_TRIAGE_GUIDE.md`](docs/ISSUE_TRIAGE_GUIDE.md) — How we got every open issue here ready for outside contributors; apply the same process in the other Latch repos
+- [`docs/OSS_READINESS_CHECKLIST.md`](docs/OSS_READINESS_CHECKLIST.md) — Repo-agnostic checklist for getting any Accessgate repo ready for outside contributors
+- [`docs/ISSUE_TRIAGE_GUIDE.md`](docs/ISSUE_TRIAGE_GUIDE.md) — How we got every open issue here ready for outside contributors; apply the same process in the other Accessgate repos
 - [`docs/BUILD.md`](docs/BUILD.md) — Deployment records for contracts currently live on a network
 
 ## Contributing

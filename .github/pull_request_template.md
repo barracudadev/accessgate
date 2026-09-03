@@ -1,4 +1,4 @@
-<!-- Thank you for contributing to Latch Contracts! -->
+<!-- Thank you for contributing to Accessgate Contracts! -->
 <!-- Consider opening an issue for discussion prior to submitting a PR — see CONTRIBUTING.md. -->
 
 Fixes #??? <!-- Fill in with issue number -->

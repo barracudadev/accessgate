@@ -1,9 +1,9 @@
 # Open-Source Readiness Checklist
 
-A repo-agnostic checklist for getting any Latch repo ready for outside contributors. Apply this
-to every repo (`latch-web-extension`, `latch-mobile`, `latch-api`, `latch-relayer`,
-`latch-contracts-dapp`, and any future ones) — the checkboxes below reflect **this repo's**
-(`latch-contracts`) current status, use it as the reference implementation for each item.
+A repo-agnostic checklist for getting any Accessgate repo ready for outside contributors. Apply this
+to every repo (`accessgate-web-extension`, `accessgate-mobile`, `accessgate-api`, `accessgate-relayer`,
+`accessgate-dapp`, and any future ones) — the checkboxes below reflect **this repo's**
+(`accessgate`) current status, use it as the reference implementation for each item.
 
 **How to use this**: work through it top to bottom. Items marked 🔧 need adapting to your
 repo's language/stack (the concept is universal, the tool isn't). Items marked ⚠️ are things we
@@ -17,7 +17,7 @@ got wrong on the first pass here — read the note before you repeat the mistake
       (`Copyright (c) 2026 3K1 Labs`). Don't overthink this one unless you have a specific reason
       to want Apache-2.0's explicit patent grant instead.
 - [x] **`CODE_OF_CONDUCT.md`** — decide per-repo, don't assume the same answer everywhere. Added
-      2026-08-22, matching `latch-mobile`'s style rather than the verbatim Contributor Covenant
+      2026-08-22, matching `accessgate-mobile`'s style rather than the verbatim Contributor Covenant
       template originally recommended here — a short, project-voiced version with a
       contracts-specific addition (no introducing vulnerabilities, no disclosing security issues
       publicly before they're fixed, no soliciting private keys), "Adapted from" the Covenant

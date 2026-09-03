@@ -1,11 +1,11 @@
-//! Permissioned fee forwarder — lets `latch-relayer` sponsor gasless
-//! transactions for Latch accounts that hold no XLM.
+//! Permissioned fee forwarder — lets `accessgate-relayer` sponsor gasless
+//! transactions for Accessgate accounts that hold no XLM.
 //!
-//! Singleton, permissioned contract shared across every Latch account, same
+//! Singleton, permissioned contract shared across every Accessgate account, same
 //! pattern as `ed25519-verifier`/`threshold-policy` (not deployed per
-//! account). Permissioned because Latch controls both sides of the flow —
+//! account). Permissioned because Accessgate controls both sides of the flow —
 //! the wallet and the relayer — so the executor role is reserved for
-//! `latch-relayer`'s own operating address(es), not an open relayer market.
+//! `accessgate-relayer`'s own operating address(es), not an open relayer market.
 //!
 //! This is a thin `#[contract]` wrapper around OZ's `stellar-fee-abstraction`
 //! helpers (`stellar_fee_abstraction::collect_fee_and_invoke` and friends) —
@@ -93,7 +93,7 @@ impl FeeForwarder {
     // 10 args is inherent to this entrypoint's shape: it mirrors OZ's audited
     // `collect_fee_and_invoke` parameter list plus `relayer` for
     // `#[only_role]`'s role check. Splitting into a struct would diverge from
-    // the audited reference and from the ABI the companion latch-relayer
+    // the audited reference and from the ABI the companion accessgate-relayer
     // issue builds its off-chain signing/submission against.
     #[allow(clippy::too_many_arguments)]
     #[only_role(relayer, "executor")]

@@ -1,4 +1,4 @@
-//! Vesting schedule personal contract template for Latch smart accounts.
+//! Vesting schedule personal contract template for Accessgate smart accounts.
 //!
 //! A lightweight satellite contract owned by a user's smart account (or account
 //! address) that holds SEP-41 tokens and releases them over time according to a

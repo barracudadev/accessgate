@@ -13,7 +13,7 @@ Part of the raw P-256 session-key initiative (issue #19): an ephemeral secp256r1
 that a durable passkey authorizes once, via a scoped, expiring `CallContract` context rule plus the
 existing session policy, so a session key can sign permitted actions **without another WebAuthn
 ceremony**. This crate is the cryptographic primitive only — key generation, storage, and the
-session-authorization UI are client-side work (`latch-web-extension`/`latch-mobile`), not this
+session-authorization UI are client-side work (`accessgate-web-extension`/`accessgate-mobile`), not this
 crate's concern.
 
 This is **not** a WebAuthn variant. `webauthn-verifier` already verifies secp256r1 signatures, but
@@ -155,16 +155,16 @@ happy-path test. Explicitly required by issue #21 as well:
   `valid_until`/`remove_context_rule` machinery and the session policy, same separation of concerns
   `session-policy`'s own module doc already documents for the WebAuthn/Ed25519 case.
 - Not responsible for client-side key generation, storage, or the session-authorization UI — see
-  the client-side issues (`latch-web-extension`#41, `latch-mobile`#60).
+  the client-side issues (`accessgate-web-extension`#41, `accessgate-mobile`#60).
 
 ## References
 
 - `soroban-sdk` 26.1.0 `crypto.rs` — `Crypto::secp256r1_verify` exact signature.
-- `latch-verifiers/webauthn-verifier/src/lib.rs` — existing 65-byte SEC1 key format and 64-byte
+- `accessgate-verifiers/webauthn-verifier/src/lib.rs` — existing 65-byte SEC1 key format and 64-byte
   compact signature format for this same curve in this repo.
-- `latch-verifiers/webauthn-verifier/src/test.rs` — `normalize_s()` precedent for low-S signing.
+- `accessgate-verifiers/webauthn-verifier/src/test.rs` — `normalize_s()` precedent for low-S signing.
 - `references/stellar-contracts/packages/accounts/src/verifiers/webauthn.rs:356` — the extra
   `sha256` wrapping this verifier deliberately does *not* replicate (see §4).
-- `latch-verifiers/secp256k1-verifier-spec.md` — sibling spec, same rigor, contrasting recover-based
+- `accessgate-verifiers/secp256k1-verifier-spec.md` — sibling spec, same rigor, contrasting recover-based
   verification.
 - Issue #19 — the initiative and target flow this verifier serves.

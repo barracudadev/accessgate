@@ -1,4 +1,4 @@
-# Contributing to Latch Contracts
+# Contributing to Accessgate Contracts
 
 Thanks for your interest in contributing. Please take a few minutes to review
 this before opening a pull request — it'll save time for both of us.
@@ -16,7 +16,7 @@ time for everyone.
 
 **The expected workflow is:**
 
-1. [Open an issue](https://github.com/3K1-Labs/latch-contracts/issues/new)
+1. [Open an issue](https://github.com/3K1-Labs/accessgate/issues/new)
    describing what you want to add or change, and why.
 2. Discuss the design with the maintainers in the issue.
 3. Once the design is agreed on, start the implementation and open a PR.
@@ -37,12 +37,12 @@ This repo is a **single Cargo workspace** — every crate below is a member,
 sharing one `Cargo.lock` and one pinned `stellar-accounts` version:
 
 ```
-latch-smart-account/                          the account contract
+accessgate-smart-account/                     the account contract
 account-factory/contracts/
   factory-contract/                           the factory itself
   dummy-account/                               test-only stub, no tests of its own
   dummy-singleton/                             test-only stub, no tests of its own
-latch-verifiers/
+accessgate-verifiers/
   ed25519-verifier/                            Ed25519, raw hash
   p256-verifier/                               P-256, raw hash
   secp256k1-verifier/                          secp256k1, raw hash, recover and compare
@@ -67,7 +67,7 @@ the specific crate you're working on before running them.
 1. Make sure your fork is up to date:
 
     ```sh
-    git remote add upstream https://github.com/3K1-Labs/latch-contracts.git
+    git remote add upstream https://github.com/3K1-Labs/accessgate.git
     git fetch upstream
     git pull --rebase upstream main
     ```
@@ -154,6 +154,6 @@ reviewed it.
 
 ## All Set
 
-If you have questions, open an [issue](https://github.com/3K1-Labs/latch-contracts/issues).
+If you have questions, open an [issue](https://github.com/3K1-Labs/accessgate/issues).
 
 Thanks for your time and code!

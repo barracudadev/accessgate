@@ -12,12 +12,12 @@ against the bytes it was computed from (see `deployments/README.md`).
 |---|---|
 | Network | Test SDF Network ; September 2015 |
 | Built with | `stellar contract build` (stellar-cli 27.1.0; optimizes by default) |
-| Deployed by | `GCOWPY2RHD6Y764NAEIB2SMJITDJLAJ7X4WVAQWQQKQTPRNRQKMT2W5K` (`latch-testnet-deployer`, a throwaway testnet identity) |
+| Deployed by | `GCOWPY2RHD6Y764NAEIB2SMJITDJLAJ7X4WVAQWQQKQTPRNRQKMT2W5K` (`accessgate-testnet-deployer`, a throwaway testnet identity) |
 | Explorer | `https://stellar.expert/explorer/testnet/contract/<address>` |
 
 **Fee Forwarder configuration:** `admin` = `manager` = deployer (testnet only; mainnet custody is
-[#84](https://github.com/3K1-Labs/latch-contracts/issues/84)); `executor` =
-`GBLDLFA2Y3RXGL3LZPFTZYDCAE5OZRUVDLBRWAZGA7ZRWT7BGSA7IHMT` (`latch-testnet-executor`, the key latch-relayer#37 will hold).
+[#84](https://github.com/3K1-Labs/accessgate/issues/84)); `executor` =
+`GBLDLFA2Y3RXGL3LZPFTZYDCAE5OZRUVDLBRWAZGA7ZRWT7BGSA7IHMT` (`accessgate-testnet-executor`, the key accessgate-relayer#37 will hold).
 Fee token enabled: testnet USDC SAC `CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA`
 (`USDC:GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5`).
 
@@ -29,7 +29,7 @@ Quick reference:
 
 | Contract | Address / hash |
 |---|---|
-| Latch Smart Account | `85f4e1d77f4f9efab5e8b3effb6d10719951d2355337ba459bc9593fb36fae18` |
+| Accessgate Smart Account | `85f4e1d77f4f9efab5e8b3effb6d10719951d2355337ba459bc9593fb36fae18` |
 | Timelock Vault template | `07e04c1a0fdd0a1a9f2d99742608df835f4bb7813a3879be5f0168f7ae041f34` |
 | Vesting Schedule template | `7c6bda5c5bd3ed11296ab5a39477b6f727c317a85966c2de4476d05bfce55b67` |
 | Ed25519 Verifier | `CAETENVJ67XXUMQQCKSU774S62TD6C4LDOYGJ3EY6XSTBLXNQZMZI6Q7` |
@@ -48,7 +48,7 @@ Quick reference:
 
 ---
 
-## Latch Smart Account (wasm upload only — instances are deployed by the factory)
+## Accessgate Smart Account (wasm upload only — instances are deployed by the factory)
 
 | Field | Value |
 |---|---|

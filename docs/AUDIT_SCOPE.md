@@ -1,4 +1,4 @@
-# Audit Scope — Latch Contracts v1
+# Audit Scope — Accessgate Contracts v1
 
 Scope statement for the external security audit that gates mainnet. Decided 2026-09-02: **the
 audit covers everything on `main` as it stands**, at the commit tagged `audit-v1` (this
@@ -12,24 +12,24 @@ Every deployable crate in the Cargo workspace. Line counts are non-blank, non-co
 
 | Crate | Role | Src lines | Tests |
 |---|---|---|---|
-| `latch-smart-account` | The account. Thin over OZ `SmartAccount`; Latch-specific: self-authorized `upgrade()`, `deploy_contract`, `batch_add_signer` | 127 | 23 |
-| `account-factory/contracts/factory-contract` | Deterministic account deployment, signer canonicalization, salt derivation (`latch.factory.account.v2`) | 296 | 24 |
-| `latch-verifiers/ed25519-verifier` | Wrapper over OZ `ed25519` verifier | 21 | 8 |
-| `latch-verifiers/p256-verifier` | Stateless raw P-256, own input validation | 45 | 19 |
-| `latch-verifiers/secp256k1-verifier` | Stateless raw secp256k1, recover-and-compare | 58 | 25 |
-| `latch-verifiers/webauthn-verifier` | WebAuthn assertion parsing over P-256 | 29 | 19 |
+| `accessgate-smart-account` | The account. Thin over OZ `SmartAccount`; Accessgate-specific: self-authorized `upgrade()`, `deploy_contract`, `batch_add_signer` | 127 | 23 |
+| `account-factory/contracts/factory-contract` | Deterministic account deployment, signer canonicalization, salt derivation (`accessgate.factory.account.v2`) | 296 | 24 |
+| `accessgate-verifiers/ed25519-verifier` | Wrapper over OZ `ed25519` verifier | 21 | 8 |
+| `accessgate-verifiers/p256-verifier` | Stateless raw P-256, own input validation | 45 | 19 |
+| `accessgate-verifiers/secp256k1-verifier` | Stateless raw secp256k1, recover-and-compare | 58 | 25 |
+| `accessgate-verifiers/webauthn-verifier` | WebAuthn assertion parsing over P-256 | 29 | 19 |
 | `policies/threshold-policy` | Wrapper over OZ `simple_threshold` | 52 | 0 (see below) |
 | `policies/weighted-threshold-policy` | Wrapper over OZ `weighted_threshold` | 68 | 0 (see below) |
-| `policies/session-policy` | Latch-original: per-rule allowed-function list | 172 | 14 |
+| `policies/session-policy` | Accessgate-original: per-rule allowed-function list | 172 | 14 |
 | `policies/spending-limit-policy` | Wrapper over OZ `spending_limit` | 50 | 0 (see below) |
-| `policies/multi-token-spending-limit-policy` | Latch-original: oracle-denominated limit across tokens | 225 | 23 |
-| `policies/parameter-scoped-policy` | Latch-original: Zodiac-Roles-style argument conditions | 304 | 28 |
-| `policies/recipient-allowlist-policy` | Latch-original: recipient allowlist | 202 | 8 |
+| `policies/multi-token-spending-limit-policy` | Accessgate-original: oracle-denominated limit across tokens | 225 | 23 |
+| `policies/parameter-scoped-policy` | Accessgate-original: Zodiac-Roles-style argument conditions | 304 | 28 |
+| `policies/recipient-allowlist-policy` | Accessgate-original: recipient allowlist | 202 | 8 |
 | `fee-forwarder` | Wrapper over OZ `fee-abstraction` + `access` roles; relayer-sponsored gasless calls | 65 | 15 |
 | `templates/timelock-vault` | User-deployed personal contract | 80 | 14 |
 | `templates/vesting-schedule` | User-deployed personal contract | 242 | 18 |
 
-**Where to spend the time.** The Latch-original logic is concentrated in `factory-contract`,
+**Where to spend the time.** The Accessgate-original logic is concentrated in `factory-contract`,
 `session-policy`, `parameter-scoped-policy`, `multi-token-spending-limit-policy`,
 `recipient-allowlist-policy`, the two raw verifiers, and `vesting-schedule`. Everything else is a
 deployable shell over audited OZ code, where the interesting questions are wiring and
@@ -37,7 +37,7 @@ authorization (who can call what), not algorithmic.
 
 **Crates with no in-crate tests.** `threshold-policy`, `weighted-threshold-policy` and
 `spending-limit-policy` are single-file wrappers with no test module. `spending-limit-policy`
-is exercised end-to-end by `latch-smart-account`'s tests; the two threshold crates are not
+is exercised end-to-end by `accessgate-smart-account`'s tests; the two threshold crates are not
 exercised anywhere in the workspace. Flagging rather than hiding it.
 
 ## Explicitly out of scope
@@ -45,15 +45,15 @@ exercised anywhere in the workspace. Flagging rather than hiding it.
 - `demo/modified-ed25519-verifier` — reference only, documented as never-to-be-deployed.
 - `account-factory/contracts/dummy-account`, `dummy-singleton` — test fixtures.
 - `references/` — gitignored third-party clones for reading, not built or shipped.
-- The `experimental` branch, in particular [PR #53](https://github.com/3K1-Labs/latch-contracts/pull/53)
+- The `experimental` branch, in particular [PR #53](https://github.com/3K1-Labs/accessgate/pull/53)
   (on-chain signer-change enforcement). Deliberately parked until after launch; see
   "Known and accepted risks" below.
-- Open PRs [#81](https://github.com/3K1-Labs/latch-contracts/pull/81),
-  [#72](https://github.com/3K1-Labs/latch-contracts/pull/72),
-  [#55](https://github.com/3K1-Labs/latch-contracts/pull/55),
-  [#52](https://github.com/3K1-Labs/latch-contracts/pull/52) — held until after the audit
+- Open PRs [#81](https://github.com/3K1-Labs/accessgate/pull/81),
+  [#72](https://github.com/3K1-Labs/accessgate/pull/72),
+  [#55](https://github.com/3K1-Labs/accessgate/pull/55),
+  [#52](https://github.com/3K1-Labs/accessgate/pull/52) — held until after the audit
   snapshot; they add new contracts, not changes to audited ones.
-- Client code (`latch-web-extension`, `latch-mobile`, `latch-relayer`, `latch-api`).
+- Client code (`accessgate-web-extension`, `accessgate-mobile`, `accessgate-relayer`, `accessgate-api`).
 
 ## Dependencies
 
@@ -75,7 +75,7 @@ dependencies. `Cargo.lock` is committed.
   `executor` set (the relayer's operating addresses). Role grant/revoke is available
   post-deploy. Key custody for `admin`/`manager` is an operational decision tracked in
   `MAINNET_READINESS_CHECKLIST.md`, not a code question.
-- **Templates** are deployed by end users for themselves; Latch holds no role in them.
+- **Templates** are deployed by end users for themselves; Accessgate holds no role in them.
 
 ## Known and accepted risks (please confirm, don't rediscover)
 
@@ -85,11 +85,11 @@ dependencies. `Cargo.lock` is committed.
    that rejects zero signers, permanently disabling that rule. OZ documents this as an
    administrator responsibility (`simple_threshold` module docs; `v0.7.0` audit trust
    assumptions for `weighted_threshold`). We reproduced both cases against 0.7.2 and against
-   `LatchSmartAccount` (issues [#38](https://github.com/3K1-Labs/latch-contracts/issues/38),
-   [#77](https://github.com/3K1-Labs/latch-contracts/issues/77)). **Decision:** on-chain
+   `AccessgateSmartAccount` (issues [#38](https://github.com/3K1-Labs/accessgate/issues/38),
+   [#77](https://github.com/3K1-Labs/accessgate/issues/77)). **Decision:** on-chain
    enforcement exists on `experimental` (PR #53) but overriding `SmartAccount`'s core methods
    is deferred to after launch; v1 mitigates client-side
-   ([latch-mobile#69](https://github.com/3K1-Labs/latch-mobile/issues/69)). We would value
+   ([accessgate-mobile#69](https://github.com/3K1-Labs/accessgate-mobile/issues/69)). We would value
    the auditor's view on whether OZ has since shipped or recommended a contract-level answer.
 2. **Factory creates accounts with `Ed25519` and `WebAuthn` signers only.** `p256-verifier` and
    `secp256k1-verifier` are deployed singletons but can only be attached after creation via the

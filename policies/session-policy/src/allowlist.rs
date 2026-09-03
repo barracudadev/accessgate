@@ -1,7 +1,7 @@
 //! # Method Allowlist Policy Module
 //!
 //! This policy restricts a context rule's signers to a fixed set of
-//! contract function names. It is the building block behind Latch session
+//! contract function names. It is the building block behind Accessgate session
 //! keys: a `ContextRule` scoped to `CallContract(dapp_contract)` combines an
 //! ephemeral signer with this policy so the session key may only invoke the
 //! allowlisted functions on that one contract.

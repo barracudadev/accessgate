@@ -1,4 +1,4 @@
-//! Weighted M-of-N threshold policy for Latch smart accounts.
+//! Weighted M-of-N threshold policy for Accessgate smart accounts.
 //!
 //! Like `threshold-policy`, but signers aren't equal: each signer in a
 //! context rule is assigned an individual weight, and authorization

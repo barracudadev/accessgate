@@ -1,4 +1,4 @@
-//! Simple (unweighted) M-of-N threshold policy for Latch smart accounts.
+//! Simple (unweighted) M-of-N threshold policy for Accessgate smart accounts.
 //!
 //! Attach this policy to a context rule to require that at least `threshold`
 //! of its signers authenticate before an action is authorized — a standard

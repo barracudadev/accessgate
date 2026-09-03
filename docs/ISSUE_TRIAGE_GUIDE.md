@@ -1,8 +1,8 @@
 # Issue Triage Guide
 
-How we got every open issue in `latch-contracts` ready for outside contributors ahead of the
+How we got every open issue in `accessgate` ready for outside contributors ahead of the
 Stellar OSS wave — apply the same process to your own repo's open issues
-(`latch-web-extension`, `latch-mobile`, `latch-api`, `latch-relayer`, `latch-contracts-dapp`).
+(`accessgate-web-extension`, `accessgate-mobile`, `accessgate-api`, `accessgate-relayer`, `accessgate-dapp`).
 This isn't a one-time cleanup, it's a process — the drift that made this pass necessary will
 happen again, so re-run it periodically.
 

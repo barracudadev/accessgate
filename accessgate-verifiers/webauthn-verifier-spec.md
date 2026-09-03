@@ -1,6 +1,6 @@
 # WebAuthn Verifier Spec
 
-A stateless singleton Soroban contract that verifies WebAuthn authentication assertions on behalf of Latch smart accounts. Deployed once, shared across all accounts on the network.
+A stateless singleton Soroban contract that verifies WebAuthn authentication assertions on behalf of Accessgate smart accounts. Deployed once, shared across all accounts on the network.
 
 ## What WebAuthn Is
 
@@ -13,7 +13,7 @@ WebAuthn is a W3C standard for authenticating with public key cryptography using
 - YubiKey and other hardware keys
 - Any device implementing the WebAuthn standard
 
-This is the primary passkey path for Latch. It requires no external wallet app — the device itself is the signer.
+This is the primary passkey path for Accessgate. It requires no external wallet app — the device itself is the signer.
 
 ---
 
@@ -33,7 +33,7 @@ The verifier must validate all three before accepting the signature as valid.
 
 WebAuthn does not sign an arbitrary message. It embeds the "thing to sign" as a `challenge` field inside `clientDataJSON`, base64url-encoded. The browser/platform constructs the JSON and the authenticator signs over it.
 
-For Latch, the challenge is the base64url encoding of the 32-byte Soroban auth payload hash:
+For Accessgate, the challenge is the base64url encoding of the 32-byte Soroban auth payload hash:
 
 ```
 challenge = base64url(auth_payload_hash)
@@ -137,8 +137,8 @@ No storage. No constructor. Every call is a pure function of its inputs. The sam
 ## Workspace Location
 
 ```
-latch-contracts/
-└── latch-verifiers/
+accessgate/
+└── accessgate-verifiers/
     └── webauthn-verifier/
         └── contracts/
             └── webauthn-verifier/
@@ -147,7 +147,7 @@ latch-contracts/
                     └── test.rs
 ```
 
-The implementation delegates entirely to `stellar_accounts::verifiers::webauthn`. The contract is a thin wrapper that XDR-decodes the inputs and calls the library. The g2c reference at `latch/reference/g2c/contracts/webauthn-verifier/src/contract.rs` is the direct model.
+The implementation delegates entirely to `stellar_accounts::verifiers::webauthn`. The contract is a thin wrapper that XDR-decodes the inputs and calls the library.
 
 ---
 

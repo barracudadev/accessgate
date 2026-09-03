@@ -1,7 +1,7 @@
 //! Stateless raw secp256k1 signature verifier.
 //!
 //! Verifies a 65-byte recoverable ECDSA signature (`r || s || recovery_id`)
-//! over the already produced 32-byte Latch authorization payload hash using a
+//! over the already produced 32-byte Accessgate authorization payload hash using a
 //! 65-byte uncompressed SEC1 public key (`0x04 || X || Y`). The digest is not
 //! hashed a second time. The Soroban host enforces low-S normalization.
 //!
@@ -23,7 +23,7 @@ use stellar_accounts::verifiers::Verifier;
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 #[repr(u32)]
 pub enum Secp256k1VerifierError {
-    /// The Latch authorization payload hash is not exactly 32 bytes.
+    /// The Accessgate authorization payload hash is not exactly 32 bytes.
     InvalidHashLength = 1,
     /// The public key does not use the required uncompressed SEC1 prefix.
     InvalidKeyEncoding = 2,
@@ -54,7 +54,7 @@ impl Verifier for Secp256k1Verifier {
     /// host without another hashing step.
     ///
     /// The hazmat API is necessary here because the generic verifier boundary
-    /// represents the already-SHA-256-hashed Latch auth digest as `Bytes`. The
+    /// represents the already-SHA-256-hashed Accessgate auth digest as `Bytes`. The
     /// SDK has no supported conversion from those raw bytes back to `Hash<32>`;
     /// hashing again to obtain that type would verify a different message.
     ///

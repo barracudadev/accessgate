@@ -2,7 +2,7 @@
 
 extern crate std;
 
-use smart_account::{LatchSmartAccount, LatchSmartAccountClient};
+use smart_account::{AccessgateSmartAccount, AccessgateSmartAccountClient};
 use soroban_sdk::{
     contract, contractimpl,
     testutils::{Address as _, Ledger},
@@ -403,11 +403,11 @@ fn test_end_to_end_deployment_and_claim_via_smart_account() {
     let env = Env::default();
     env.mock_all_auths();
 
-    // 1. Deploy and initialize a real LatchSmartAccount.
+    // 1. Deploy and initialize a real AccessgateSmartAccount.
     let signers = vec![&env, Signer::Delegated(Address::generate(&env))];
     let policies: Map<Address, Val> = Map::new(&env);
-    let account_id = env.register(LatchSmartAccount, (signers.clone(), policies.clone()));
-    let smart_account_client = LatchSmartAccountClient::new(&env, &account_id);
+    let account_id = env.register(AccessgateSmartAccount, (signers.clone(), policies.clone()));
+    let smart_account_client = AccessgateSmartAccountClient::new(&env, &account_id);
 
     // 2. Deploy MockToken.
     let token_id = env.register(MockTokenContract, ());

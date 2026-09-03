@@ -1,15 +1,15 @@
 ---
 name: code-quality
 description: >
-  Review and (optionally) fix Rust source files against the Latch Contracts
+  Review and (optionally) fix Rust source files against the Accessgate Contracts
   Code Quality Checklist. Use this skill whenever the user wants to audit,
   review, or improve code quality of a contract or policy crate in this repo,
   or mentions "/code-quality". Triggers on phrases like "check code quality",
-  "review latch style", "review this contract".
+  "review accessgate style", "review this contract".
 user_invocable: true
 ---
 
-# Latch Contracts — Code Quality Checklist
+# Accessgate Contracts — Code Quality Checklist
 
 Reviews `.rs` files in this repo for convention violations and either reports
 them or fixes them in place — the user picks.
@@ -31,12 +31,12 @@ pins `soroban-sdk` and `stellar-accounts` (from crates.io, not a git rev) once
 for all of them to share:
 
 ```
-latch-smart-account/                # the account contract itself
+accessgate-smart-account/           # the account contract itself
 account-factory/contracts/
   factory-contract/                 # the factory
   dummy-account/                    # test-only stub, no tests of its own
   dummy-singleton/                  # test-only stub, no tests of its own
-latch-verifiers/
+accessgate-verifiers/
   ed25519-verifier/                 # Ed25519, raw hash
   webauthn-verifier/
 policies/
@@ -62,7 +62,7 @@ regardless of cwd. See the memory entry on auditing the OZ pin
   (`git diff main...HEAD --name-only`, plus any uncommitted edits).
 - `/code-quality <path>` — review a specific file or directory.
 - `/code-quality <crate-name>` — review one crate by its top-level directory
-  name (e.g. `policies/session-policy`, `latch-verifiers/webauthn-verifier`).
+  name (e.g. `policies/session-policy`, `accessgate-verifiers/webauthn-verifier`).
 
 ## Workflow
 
@@ -148,7 +148,7 @@ Summarize what changed, grouped by file. If nothing was edited, say so.
 These rules are derived from the existing crates — the four `policies/*`
 crates (`session-policy`, `spending-limit-policy`, `threshold-policy`,
 `weighted-threshold-policy`), `account-factory`, and the two
-`latch-verifiers/*` crates. A few are marked **(target, not yet universal)**
+`accessgate-verifiers/*` crates. A few are marked **(target, not yet universal)**
 — a convention this repo has decided on going forward, that
 older code doesn't fully follow yet. Don't silently rewrite old code to match
 without flagging it; surface it as a discrepancy per the workflow above.
@@ -283,7 +283,7 @@ crate is actually doing:
   exercise the auth machinery directly instead (calling
   `smart_account::do_check_auth` rather than going through
   `require_auth()`), explain why in a doc comment on the test module — see
-  `latch-smart-account/src/test.rs`'s session-integration-tests header
+  `accessgate-smart-account/src/test.rs`'s session-integration-tests header
   comment as the model for how to justify the deviation.
 - Panic tests should use the numeric form,
   `#[should_panic(expected = "Error(Contract, #<code>)")]`, matching the

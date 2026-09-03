@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug in one of the Latch contracts
+description: Report a bug in one of the Accessgate contracts
 labels: ["bug"]
 body:
   - type: markdown
@@ -11,10 +11,10 @@ body:
     attributes:
       label: Affected crate
       options:
-        - latch-smart-account
+        - accessgate-smart-account
         - account-factory
-        - latch-verifiers/ed25519-verifier
-        - latch-verifiers/webauthn-verifier
+        - accessgate-verifiers/ed25519-verifier
+        - accessgate-verifiers/webauthn-verifier
         - policies/threshold-policy
         - policies/weighted-threshold-policy
         - policies/session-policy

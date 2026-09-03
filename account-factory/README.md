@@ -1,4 +1,4 @@
-# Latch Account Factory
+# Accessgate Account Factory
 
 A deterministic, idempotent smart account factory for Soroban. Validates and canonicalizes signer inputs, derives account addresses before deployment, and deploys smart account instances via shared singleton verifier and policy contracts.
 
@@ -13,7 +13,7 @@ Built on [OpenZeppelin Stellar Contracts](https://github.com/OpenZeppelin/stella
 
 
 </br>
-The factory is the only deployment path for Latch smart accounts. Singletons are deployed independently before the factory and never re-deployed by it. The factory holds no user state — all user data lives in the deployed account contracts.
+The factory is the only deployment path for Accessgate smart accounts. Singletons are deployed independently before the factory and never re-deployed by it. The factory holds no user state — all user data lives in the deployed account contracts.
 
 
 ---
@@ -70,8 +70,8 @@ The factory does **shape validation only** — length and prefix checks. Cryptog
 Addresses are deterministic — derived from parameters, not caller identity. Signer order does not affect the address (list is sorted before hashing).
 
 ```
-LatchAccountSaltV2 = SHA256(
-  "latch.factory.account.v2"  ||
+AccessgateAccountSaltV2 = SHA256(
+  "accessgate.factory.account.v2"  ||
   account_salt                ||   // 32 bytes
   signer_count                ||   // 4 bytes big-endian
   for each canonical signer:
@@ -81,7 +81,7 @@ LatchAccountSaltV2 = SHA256(
   effective_threshold              // 4 bytes big-endian
 )
 
-SmartAccountAddress = DeployAddress(deployer=factory, salt=LatchAccountSaltV2, wasm=smart_account_wasm_hash)
+SmartAccountAddress = DeployAddress(deployer=factory, salt=AccessgateAccountSaltV2, wasm=smart_account_wasm_hash)
 ```
 
 The same signer set can produce multiple independent accounts by varying `account_salt`. Generate a random 32-byte salt per account; store it if the user needs address recovery.

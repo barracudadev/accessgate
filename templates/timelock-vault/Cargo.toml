@@ -12,6 +12,6 @@ doctest = false
 soroban-sdk = { workspace = true }
 
 [dev-dependencies]
-smart-account = { path = "../../latch-smart-account" }
+smart-account = { path = "../../accessgate-smart-account" }
 soroban-sdk = { workspace = true, features = ["testutils"] }
 stellar-accounts.workspace = true

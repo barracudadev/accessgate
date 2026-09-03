@@ -23,19 +23,19 @@ pub struct DeployedContract {
 }
 
 #[contracttype]
-pub enum LatchSmartAccountStorageKey {
+pub enum AccessgateSmartAccountStorageKey {
     DeployedContractCount,
     DeployedContract(u32),
 }
 
-/// Error codes for `LatchSmartAccount`'s own methods, distinct from
+/// Error codes for `AccessgateSmartAccount`'s own methods, distinct from
 /// `SmartAccountError` (the upstream `stellar-accounts` crate's error type,
 /// numbered 3000+). Numbered starting at 4000 so a raw error code seen on
 /// this contract is unambiguous about which enum it came from.
 #[contracterror]
 #[derive(Copy, Clone, Debug, PartialEq)]
 #[repr(u32)]
-pub enum LatchSmartAccountError {
+pub enum AccessgateSmartAccountError {
     /// No deployed contract is recorded at the requested index.
     DeployedContractNotFound = 4000,
     /// The deployed-contract counter has reached `u32::MAX`.
@@ -53,10 +53,10 @@ pub struct ContractDeployed {
 }
 
 #[contract]
-pub struct LatchSmartAccount;
+pub struct AccessgateSmartAccount;
 
 #[contractimpl]
-impl LatchSmartAccount {
+impl AccessgateSmartAccount {
     pub fn __constructor(e: &Env, signers: Vec<Signer>, policies: Map<Address, Val>) {
         smart_account::add_context_rule(
             e,
@@ -102,7 +102,7 @@ impl LatchSmartAccount {
     ///
     /// # Errors
     ///
-    /// * [`LatchSmartAccountError::MathOverflow`] - If the deployed-contract
+    /// * [`AccessgateSmartAccountError::MathOverflow`] - If the deployed-contract
     ///   counter has reached `u32::MAX`.
     ///
     /// # Events
@@ -121,12 +121,12 @@ impl LatchSmartAccount {
         let index = Self::get_deployed_contract_count(e);
         let next_count = index
             .checked_add(1)
-            .unwrap_or_else(|| panic_with_error!(e, LatchSmartAccountError::MathOverflow));
+            .unwrap_or_else(|| panic_with_error!(e, AccessgateSmartAccountError::MathOverflow));
         e.storage()
             .instance()
-            .set(&LatchSmartAccountStorageKey::DeployedContractCount, &next_count);
+            .set(&AccessgateSmartAccountStorageKey::DeployedContractCount, &next_count);
 
-        let key = LatchSmartAccountStorageKey::DeployedContract(index);
+        let key = AccessgateSmartAccountStorageKey::DeployedContract(index);
         let record = DeployedContract { address: address.clone(), wasm_hash: wasm_hash.clone() };
         e.storage().persistent().set(&key, &record);
         e.storage().persistent().extend_ttl(
@@ -143,7 +143,7 @@ impl LatchSmartAccount {
     /// Returns the number of contracts this account has deployed via
     /// `deploy_contract`. Defaults to `0`.
     pub fn get_deployed_contract_count(e: &Env) -> u32 {
-        e.storage().instance().get(&LatchSmartAccountStorageKey::DeployedContractCount).unwrap_or(0)
+        e.storage().instance().get(&AccessgateSmartAccountStorageKey::DeployedContractCount).unwrap_or(0)
     }
 
     /// Returns the `index`-th contract this account has deployed via
@@ -151,10 +151,10 @@ impl LatchSmartAccount {
     ///
     /// # Errors
     ///
-    /// * [`LatchSmartAccountError::DeployedContractNotFound`] - If no deployed
+    /// * [`AccessgateSmartAccountError::DeployedContractNotFound`] - If no deployed
     ///   contract is recorded at `index`.
     pub fn get_deployed_contract(e: &Env, index: u32) -> DeployedContract {
-        let key = LatchSmartAccountStorageKey::DeployedContract(index);
+        let key = AccessgateSmartAccountStorageKey::DeployedContract(index);
         e.storage()
             .persistent()
             .get::<_, DeployedContract>(&key)
@@ -166,13 +166,13 @@ impl LatchSmartAccount {
                 );
             })
             .unwrap_or_else(|| {
-                panic_with_error!(e, LatchSmartAccountError::DeployedContractNotFound)
+                panic_with_error!(e, AccessgateSmartAccountError::DeployedContractNotFound)
             })
     }
 }
 
 #[contractimpl]
-impl CustomAccountInterface for LatchSmartAccount {
+impl CustomAccountInterface for AccessgateSmartAccount {
     type Error = SmartAccountError;
     type Signature = AuthPayload;
 
@@ -187,13 +187,13 @@ impl CustomAccountInterface for LatchSmartAccount {
 }
 
 #[contractimpl(contracttrait)]
-impl SmartAccount for LatchSmartAccount {}
+impl SmartAccount for AccessgateSmartAccount {}
 
 #[contractimpl(contracttrait)]
-impl ExecutionEntryPoint for LatchSmartAccount {}
+impl ExecutionEntryPoint for AccessgateSmartAccount {}
 
 #[contractimpl]
-impl Upgradeable for LatchSmartAccount {
+impl Upgradeable for AccessgateSmartAccount {
     fn upgrade(e: &Env, new_wasm_hash: BytesN<32>, _operator: Address) {
         e.current_contract_address().require_auth();
         upgradeable::upgrade(e, &new_wasm_hash);

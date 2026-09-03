@@ -17,7 +17,7 @@ use stellar_accounts::{
     smart_account::{self as smart_account, AuthPayload, ContextRuleType, Signer},
 };
 
-use super::{LatchSmartAccount, LatchSmartAccountClient};
+use super::{AccessgateSmartAccount, AccessgateSmartAccountClient};
 
 // A real, tiny, already-existing no-op contract (zero-arg constructor),
 // reused from `factory-contract`'s own testdata rather than building a new
@@ -81,9 +81,9 @@ fn register_account<'a>(
     env: &'a Env,
     signers: &Vec<Signer>,
     policies: &Map<Address, Val>,
-) -> (Address, LatchSmartAccountClient<'a>) {
-    let account_id = env.register(LatchSmartAccount, (signers.clone(), policies.clone()));
-    let client = LatchSmartAccountClient::new(env, &account_id);
+) -> (Address, AccessgateSmartAccountClient<'a>) {
+    let account_id = env.register(AccessgateSmartAccount, (signers.clone(), policies.clone()));
+    let client = AccessgateSmartAccountClient::new(env, &account_id);
     (account_id, client)
 }
 
@@ -265,7 +265,7 @@ fn upgrade_requires_self_auth() {
 // account's `require_auth` machinery, so a `Signer::Delegated` address can
 // stand in for an ephemeral session key without needing real signature
 // verification — verifier cryptography itself is already covered by the
-// `latch-verifiers` crates' own test suites.
+// `accessgate-verifiers` crates' own test suites.
 
 fn get_context(contract: Address, fn_name: Symbol, args: Vec<Val>) -> Context {
     Context::Contract(ContractContext { contract, fn_name, args })
@@ -286,7 +286,7 @@ fn create_signatures(e: &Env, signers: &Vec<Signer>, context_rule_ids: Vec<u32>)
 fn setup_session_rule<'a>(
     env: &'a Env,
     allowed_fns: Vec<Symbol>,
-) -> (Address, LatchSmartAccountClient<'a>, Address, u32, Vec<Signer>) {
+) -> (Address, AccessgateSmartAccountClient<'a>, Address, u32, Vec<Signer>) {
     env.mock_all_auths();
 
     let owner_signers = default_signers(env);

@@ -1,4 +1,4 @@
-//! Rolling-window spending limit policy for Latch smart accounts.
+//! Rolling-window spending limit policy for Accessgate smart accounts.
 //!
 //! Attach this policy to a `CallContract` context rule to cap how much can
 //! be transferred through that contract within a rolling ledger window —

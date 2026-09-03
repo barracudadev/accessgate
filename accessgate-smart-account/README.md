@@ -1,6 +1,6 @@
-# Latch Smart Account
+# Accessgate Smart Account
 
-A programmable wallet contract for Soroban. Replaces static private-key authorization with flexible, rule-based multi-signer authorization. Deployed by the Latch Account Factory — one instance per user.
+A programmable wallet contract for Soroban. Replaces static private-key authorization with flexible, rule-based multi-signer authorization. Deployed by the Accessgate Account Factory — one instance per user.
 
 Built on [OpenZeppelin Stellar Contracts](https://github.com/OpenZeppelin/stellar-contracts).
 
@@ -11,7 +11,7 @@ Built on [OpenZeppelin Stellar Contracts](https://github.com/OpenZeppelin/stella
 <img width="2383" height="2560" alt="smartaccount" src="https://github.com/user-attachments/assets/73b919ce-7137-4c2e-b03e-4fc45d50f999" />
 
 
-The contract implements four OpenZeppelin interfaces: `CustomAccountInterface` (`__check_auth`), `SmartAccount` (context rule CRUD), `ExecutionEntryPoint` (`execute`), and `Upgradeable` (`upgrade`). The Latch layer adds constructor setup, `batch_add_signer`, and `upgrade`.
+The contract implements four OpenZeppelin interfaces: `CustomAccountInterface` (`__check_auth`), `SmartAccount` (context rule CRUD), `ExecutionEntryPoint` (`execute`), and `Upgradeable` (`upgrade`). The Accessgate layer adds constructor setup, `batch_add_signer`, and `upgrade`.
 
 ---
 

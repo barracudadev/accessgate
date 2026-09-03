@@ -19,11 +19,11 @@ address the report before any public disclosure.
 This policy covers every deployable contract crate in this repository's Cargo
 workspace:
 
-- `latch-smart-account` — the account contract itself, including its
+- `accessgate-smart-account` — the account contract itself, including its
   self-authorized `upgrade()` and `deploy_contract` entrypoints.
 - `account-factory/contracts/factory-contract` — the `dummy-*` crates beside
   it are test fixtures only.
-- `latch-verifiers/*` — `ed25519-verifier`, `p256-verifier`,
+- `accessgate-verifiers/*` — `ed25519-verifier`, `p256-verifier`,
   `secp256k1-verifier`, `webauthn-verifier`.
 - `policies/*` — `threshold-policy`, `weighted-threshold-policy`,
   `session-policy`, `spending-limit-policy`,
@@ -32,7 +32,7 @@ workspace:
 - `fee-forwarder` — the permissioned relayer-sponsorship contract, including
   its admin / manager / executor role handling.
 - `templates/*` — `timelock-vault`, `vesting-schedule`. These are reference
-  contracts that users deploy for themselves rather than Latch-operated
+  contracts that users deploy for themselves rather than Accessgate-operated
   singletons, but a bug in one still puts funds at risk, so please report it
   here too.
 

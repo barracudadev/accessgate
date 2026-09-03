@@ -1,8 +1,8 @@
-# Latch Factory Contract Spec v1
+# Accessgate Factory Contract Spec v1
 
 ## 1. Purpose
 
-The `factory` contract is the canonical entrypoint for creating Latch smart accounts on Soroban.
+The `factory` contract is the canonical entrypoint for creating Accessgate smart accounts on Soroban.
 
 Its responsibilities are to:
 
@@ -79,7 +79,7 @@ fn get_threshold_policy(e: Env) -> Address
 
 ## 4.1 Account Multiplicity
 
-Latch v1 supports multiple smart accounts for the same signer set.
+Accessgate v1 supports multiple smart accounts for the same signer set.
 
 This is achieved with an explicit `account_salt` field in `AccountInitParams`.
 
@@ -89,7 +89,7 @@ Rules:
 - the same signer set plus the same `account_salt` must always resolve to the same account address
 - account multiplicity must not depend on caller identity, relayer identity, or fee payer identity
 
-This means Latch does not follow a strict one-key-one-account model like Braavos standard account deployment. Instead, it follows a deterministic many-accounts-per-signer model, closer to the role CREATE2 salts play in Argent-style deployment flows.
+This means Accessgate does not follow a strict one-key-one-account model like Braavos standard account deployment. Instead, it follows a deterministic many-accounts-per-signer model, closer to the role CREATE2 salts play in Argent-style deployment flows.
 
 ## 5. Configuration
 
@@ -264,7 +264,7 @@ Salt preimage must include:
 Recommended version tag:
 
 ```text
-latch.factory.account.v2
+accessgate.factory.account.v2
 ```
 
 Bumped from `v1` at the same time `Secp256k1` was removed from `SignerKind` — the signer-kind byte
@@ -279,7 +279,7 @@ The factory must derive a deterministic deployment salt from normalized account 
 Conceptually:
 
 ```text
-LatchAccountSaltV2 =
+AccessgateAccountSaltV2 =
 H(
   version_tag ||
   account_salt ||
@@ -295,7 +295,7 @@ H(
 Where:
 
 - `H` is the contract's chosen 32-byte hashing function for deployment salt derivation
-- `version_tag` is the fixed string `latch.factory.account.v2`
+- `version_tag` is the fixed string `accessgate.factory.account.v2`
 - `account_salt` is the explicit multiplicity input provided by the caller
 - `signer_count` is the number of canonical signers
 - `signer_i_code` is the canonical encoded signer-family code
@@ -334,7 +334,7 @@ Conceptually:
 SmartAccountAddressV2 =
 DeployAddress(
   deployer = factory_address,
-  salt = LatchAccountSaltV2,
+  salt = AccessgateAccountSaltV2,
   wasm_hash = smart_account_wasm_hash
 )
 ```
@@ -374,9 +374,9 @@ These are singleton contracts scoped to the factory version.
 
 Recommended deterministic salts:
 
-- `latch.factory.verifier.ed25519.v1`
-- `latch.factory.verifier.webauthn.v1`
-- `latch.factory.policy.threshold.v1`
+- `accessgate.factory.verifier.ed25519.v1`
+- `accessgate.factory.verifier.webauthn.v1`
+- `accessgate.factory.policy.threshold.v1`
 
 ### 10.2 Singleton Behavior
 

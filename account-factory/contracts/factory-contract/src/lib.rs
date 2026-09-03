@@ -298,7 +298,7 @@ fn build_account_policies(
 }
 
 fn compute_account_deploy_salt(env: &Env, params: &NormalizedParams) -> BytesN<32> {
-    let mut preimage = Bytes::from_slice(env, b"latch.factory.account.v2");
+    let mut preimage = Bytes::from_slice(env, b"accessgate.factory.account.v2");
     preimage.extend_from_array(&params.account_salt.to_array());
     preimage.extend_from_array(&params.signers.len().to_be_bytes());
 

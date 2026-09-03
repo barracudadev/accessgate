@@ -1,6 +1,6 @@
 //! # Timelock Vault — per-user savings contract template
 //!
-//! A simple, single-purpose contract that users deploy from their own Latch
+//! A simple, single-purpose contract that users deploy from their own Accessgate
 //! smart account. Funds (native XLM or any SAC/SEP-41 token) sent to the
 //! vault stay locked until a specified ledger sequence, regardless of who is
 //! asking — the timelock is enforced unconditionally. Withdrawal additionally

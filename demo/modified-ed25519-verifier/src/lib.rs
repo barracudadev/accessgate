@@ -1,16 +1,16 @@
 //! Demo/reference crate — **not part of the shipped verifier lineup.**
 //!
 //! This was built to prove, in a one-off demo, that a Phantom-held Ed25519
-//! key could deploy and become the owning signer of a Latch smart account
-//! on-chain. It isn't wired into any product surface: Latch and Phantom are
-//! separate browser extensions, and nothing gives Latch's extension an
+//! key could deploy and become the owning signer of an Accessgate smart account
+//! on-chain. It isn't wired into any product surface: Accessgate and Phantom are
+//! separate browser extensions, and nothing gives Accessgate's extension an
 //! ongoing way to drive Phantom's signing popup after that initial demo
 //! transaction — that would require real extension-to-extension
-//! integration that was never built. The strategy going forward is Latch
+//! integration that was never built. The strategy going forward is Accessgate
 //! as the wallet (its own extension + mobile app), with other wallets
-//! integrating *via SDK*, not by Latch reaching into their signing UI.
+//! integrating *via SDK*, not by Accessgate reaching into their signing UI.
 //!
-//! Kept here, out of `latch-verifiers/`, purely as a worked reference: the
+//! Kept here, out of `accessgate-verifiers/`, purely as a worked reference: the
 //! wrapping pattern below (hex-encode the hash, prepend a human-readable
 //! prefix, verify against the wrapped message) is the general shape needed
 //! any time a *specific* wallet's signing popup refuses to sign a raw
@@ -64,7 +64,7 @@ impl Verifier for ModifiedEd25519Verifier {
     type KeyData = BytesN<32>;
     type SigData = BytesN<64>;
 
-    /// Verify a Phantom-produced Ed25519 signature over the Latch signing
+    /// Verify a Phantom-produced Ed25519 signature over the Accessgate signing
     /// convention.
     ///
     /// The client signs: `"Stellar Smart Account Auth:\n" +

@@ -6,23 +6,23 @@
 > atomically, by today's factory (`AccountInitParams.threshold` + `build_account_policies`,
 > tested in `account-factory/contracts/factory-contract/src/test.rs`). The remaining case this doc
 > covers (atomically attaching extra `CallContract`-scoped rules at create time) was tracked as
-> [#54](https://github.com/3K1-Labs/latch-contracts/issues/54), closed as not planned in favor of
+> [#54](https://github.com/3K1-Labs/accessgate/issues/54), closed as not planned in favor of
 > the lighter alternative below. Kept here as a reference in case a concrete atomic-create
 > requirement shows up later — see that issue's closing comment for the full reasoning, including
 > which parts of "Settled design" below are genuinely settled vs. still open if this is ever
 > revisited.
 
-What it would take for Latch to let callers choose context rules and policies when creating a smart account — instead of always getting a single `Default` rule — and whether that path is worth taking.
+What it would take for Accessgate to let callers choose context rules and policies when creating a smart account — instead of always getting a single `Default` rule — and whether that path is worth taking.
 
 ---
 
 ## Today
 
-Every Latch account is born the same way:
+Every Accessgate account is born the same way:
 
 1. The factory’s `create_account` accepts only `signers`, optional `threshold`, and `account_salt` (`AccountInitParams` in `account-factory/contracts/factory-contract/src/lib.rs`).
 2. It deploys the smart account with constructor args `(signers, policies)`.
-3. The constructor **always** creates one `Default` rule named `"default"` with no expiry (`latch-smart-account/src/lib.rs`).
+3. The constructor **always** creates one `Default` rule named `"default"` with no expiry (`accessgate-smart-account/src/lib.rs`).
 
 Policies at create time are factory-invented, not user-chosen:
 
@@ -31,7 +31,7 @@ Policies at create time are factory-invented, not user-chosen:
 | Single signer | Empty |
 | Multisig | Threshold policy only (`build_account_policies`) |
 
-Address salt is `latch.factory.account.v2` over salt + canonical signers + effective threshold. Initial rules/policies are **not** in the preimage (`factory-spec.md` §9).
+Address salt is `accessgate.factory.account.v2` over salt + canonical signers + effective threshold. Initial rules/policies are **not** in the preimage (`factory-spec.md` §9).
 
 ---
 
@@ -41,7 +41,7 @@ This is a **contract + factory** change, not a client-only tweak.
 
 | Layer | Change |
 |-------|--------|
-| `latch-smart-account` | New `__constructor` that accepts rule inits (type, name, expiry, signers, policies) instead of hardcoding `Default` / `"default"` |
+| `accessgate-smart-account` | New `__constructor` that accepts rule inits (type, name, expiry, signers, policies) instead of hardcoding `Default` / `"default"` |
 | Factory `AccountInitParams` | Carry optional extra rules / typed policy installs; validate and translate into constructor args |
 | Address salt | Bump to **`v3`** and include canonical rule/policy material — otherwise same signers + different rules collide on one address |
 | `FactoryConfig` | Whitelist known policy singletons (threshold, session, spending-limit, …); do not accept arbitrary policy addresses from the client |
@@ -77,7 +77,7 @@ Then, in the same transaction or a follow-up, call the account’s existing `Sma
 - `add_context_rule` — e.g. `CallContract(token_or_dapp)` with session signers / expiry
 - `add_policy` — spending-limit, session allowlist, etc. on that rule
 
-No salt bump, no new constructor, no new factory. The on-chain surface already exists; client UI and a worked reference are the gaps (see [latch-contracts#45](https://github.com/3K1-Labs/latch-contracts/issues/45)).
+No salt bump, no new constructor, no new factory. The on-chain surface already exists; client UI and a worked reference are the gaps (see [accessgate#45](https://github.com/3K1-Labs/accessgate/issues/45)).
 
 ```
 create_account  →  Default admin rule
@@ -92,7 +92,7 @@ add_context_rule / add_policy  →  scoped rules (optional)
 1. Constructor **always** creates one **Default admin** rule first (signers + threshold policy when multisig).
 2. Constructor may create **optional additional** rules in the same call (e.g. `CallContract` + spending-limit / session).
 3. Factory whitelists policy contract addresses; install params are typed per policy kind.
-4. Salt preimage bumps to `latch.factory.account.v3` and includes canonical extra-rule material.
+4. Salt preimage bumps to `accessgate.factory.account.v3` and includes canonical extra-rule material.
 5. Clients point at a newly deployed factory; existing accounts stay on the old factory.
 
 Do **not** ship a create path that omits the Default admin rule.
